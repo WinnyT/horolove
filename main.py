@@ -52,6 +52,43 @@ def get_zodiac_sign(longitude):
     sign_index = int(longitude // 30) % 12
     return zodiac_signs[sign_index]
 
+def get_current_positions():
+    now = datetime.now(timezone.utc)
+    jd = swe.julday(now.year, now.month, now.day, now.hour + now.minute / 60.0)
+    planets = ["Sun", "Moon", "Venus"]
+    positions = {}
+    for planet in planets:
+        planet_id = getattr(swe, planet.upper())
+        position = swe.calc_ut(jd, planet_id)[0]
+        positions[planet] = position[0]
+    return positions
+
+def calculate_aspects(longtitude1, longtitude2):
+    aspects = {
+        "Conjunction": 0,
+        "Sextile": 60,
+        "Square": 90,
+        "Trine": 120,
+        "Opposition": 180
+    }
+    closest_aspect = None
+    smallest_difference = float('inf')
+    different = abs(longtitude1 - longtitude2) % 360
+    distance = min(different, 360 - different)
+    for aspect, angle in aspects.items():
+        deviation = abs(distance - angle)
+
+        if deviation < smallest_difference:
+            smallest_difference = deviation
+            closest_aspect = aspect
+            closest_angle = angle
+
+    if smallest_difference <= 5:
+        return closest_aspect, closest_angle, smallest_difference
+
+    return None, None, None
+
+
 if __name__ == "__main__":
     ask_birth_info()
     for planet, position in calculate_planetary_positions(birth_info).items():
