@@ -88,6 +88,19 @@ def calculate_aspects(longtitude1, longtitude2):
 
     return None, None, None
 
+def analyze_transits(birth_positions, current_positions):
+    aspects = {}
+    for planet1, position1 in birth_positions.items():
+        for planet2, position2 in current_positions.items():
+            aspect, angle, deviation = calculate_aspects(position1, position2)
+            if aspect:
+                aspects[(planet1, planet2)] = (aspect, angle, deviation)
+    return aspects
+
+def print_transits(birth_positions, current_positions):
+    for (natal, transit), (aspect, angle, deviation) in analyze_transits(birth_positions, current_positions).items():
+        print(f"{transit} {aspect} natal {natal} (orb: {deviation:.2f}°)")
+
 
 if __name__ == "__main__":
     ask_birth_info()
