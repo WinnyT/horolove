@@ -7,7 +7,8 @@ from interpretations import interpretations
 birth_info = {
     "name": "Winny",
     "birth_place": "New York, USA",
-    "datetime": "1990-01-01 12:00:00",
+    "birth_date": "2000-09-22",
+    "birth_time": "14:30",
     "time-zone": "America/New_York"
 }
 
@@ -16,7 +17,8 @@ def ask_birth_info():
     print("Please provide the following birth information:")
     birth_info["name"] = input("Name: ")
     birth_info["birth_place"] = input("Birth Place: ")
-    birth_info["datetime"] = input("Birth Date and Time (YYYY-MM-DD HH:MM): ")
+    birth_info["birth_date"] = input("Birth Date (YYYY-MM-DD): ")
+    birth_info["birth_time"] = input("Birth Time (HH:MM): ")
     birth_info["time-zone"] = input("Time Zone (e.g., America/New_York): ")
     print("Name:", birth_info["name"])
     print("Birth Date:", birth_info["birth_date"])
@@ -114,7 +116,6 @@ def rank_transits(transits):
 
 def generate_daily_letter(name,transits):
     letter = f"Dear {name},\n\n"
-    letter += "Here is your daily astrological report:\n\n"
     letter += "Here's what the stars have to say today:\n\n"
     ranked_transits = rank_transits(transits)[:2]
     reading_added = 0
