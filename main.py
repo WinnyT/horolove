@@ -1,6 +1,7 @@
 import swisseph as swe
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
+from interpretations import interpretations
 
 
 birth_info = {
@@ -101,13 +102,28 @@ def print_transits(birth_positions, current_positions):
     for (natal, transit), (aspect, angle, deviation) in analyze_transits(birth_positions, current_positions).items():
         print(f"{transit} {aspect} natal {natal} (orb: {deviation:.2f}°)")
 
+def get_interpretation(transit, natal, aspect):
+    if transit in interpretations and aspect in interpretations[transit]:
+        if natal in interpretations[transit][aspect]:
+            return interpretations[transit][aspect][natal]
+    return None
 
 if __name__ == "__main__":
     ask_birth_info()
-    for planet, position in calculate_planetary_positions(birth_info).items():
+    birth_positions = calculate_planetary_positions(birth_info)
+    current_positions = get_current_positions()
+    transits = analyze_transits(birth_positions, current_positions)
+    for planet, position in birth_positions.items():
         zodiac_sign = get_zodiac_sign(position)
         print(f"{planet}: {position:.2f}° - {zodiac_sign}")
-
+    for (natal, transit), (aspect, angle, deviation) in transits.items():
+        interpretation = get_interpretation(transit, natal, aspect)
+        if interpretation:
+            print(f"\n{transit} {aspect} natal {natal} (orb: {deviation:.2f}°)")
+            print(interpretation["title"])
+            print(interpretation["message"])
+    if not transits:
+        print("No major planetary aspects found today.")
 
 
 
