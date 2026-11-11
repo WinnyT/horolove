@@ -108,6 +108,28 @@ def get_interpretation(transit, natal, aspect):
             return interpretations[transit][aspect][natal]
     return None
 
+def rank_transits(transits):
+    ranked_transits = sorted(transits.items(), key=lambda x: x[1][2])
+    return ranked_transits
+
+def generate_daily_letter(name,transits):
+    letter = f"Dear {name},\n\n"
+    letter += "Here is your daily astrological report:\n\n"
+    letter += "Here's what the stars have to say today:\n\n"
+    ranked_transits = rank_transits(transits)[:2]
+    reading_added = 0
+    for (natal, transit), (aspect, angle, deviation) in ranked_transits:
+        interpretation = get_interpretation(transit, natal, aspect)
+        if interpretation:
+            letter += f"\n{transit} {aspect} natal {natal} (orb: {deviation:.2f}°)\n"
+            letter += interpretation["title"] + "\n"
+            letter += interpretation["message"] + "\n"
+            reading_added += 1
+    if reading_added == 0:
+        letter += "Today is a quieter day in your celestial chart. Take a moment to reflect on what matters most to you.\n"
+    letter += "\nWith love, the stars"
+    return letter
+
 if __name__ == "__main__":
     ask_birth_info()
     birth_positions = calculate_planetary_positions(birth_info)
