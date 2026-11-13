@@ -1,0 +1,56 @@
+.screen {
+    width: 800px;
+    height: 480px;
+    padding: 20px;
+    box-sizing: border-box;
+    background: white;
+    color: black;
+}
+
+.view--full {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.letter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid black;
+    padding-bottom: 12px;
+}
+
+.letter-header h1 {
+    font-size: 24px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.letter-header p {
+    font-size: 13px;
+    margin: 0;
+}
+
+.letter-body {
+    flex: 1;
+    min-height: 0;
+    padding: 18px 12px;
+    overflow: hidden;
+}
+
+.letter-body p {
+    white-space: pre-line;
+    overflow-wrap: break-word;
+    font-size: 17px;
+    line-height: 1.45;
+    margin: 0;
+}
+
+.letter-footer {
+    border-top: 1px solid black;
+    padding-top: 10px;
+    font-size: 12px;
+    text-align: right;
+}

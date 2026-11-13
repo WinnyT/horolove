@@ -5,6 +5,7 @@ from main import (
     analyze_transits,
     generate_daily_letter
 )
+from datetime import date, datetime
 
 app = Flask(__name__)
 
@@ -24,7 +25,9 @@ def display():
 
     letter = generate_daily_letter(birth_info["name"], transits)
 
-    return render_template("display.html", letter=letter)
+    today = date.today().strftime("%Y-%m-%d")
+
+    return render_template("display.html", letter=letter, date=today)
 
 if __name__ == "__main__":
     app.run(debug=True)
