@@ -1,4 +1,7 @@
 from flask import Flask, render_template, request, jsonify
+import os
+import secrets
+
 
 from main import (
     calculate_planetary_positions,
@@ -32,6 +35,14 @@ def display():
 
 @app.post("/api/daily-letter")
 def daily_letter_api():
+    expected_key = os.environ.get("CELESTIAL_API_KEY")
+    provided_key = request.headers.get("X-API-Key", "")
+
+    if not expected_key or not secrets.compare_digest(
+        provided_key, expected_key
+    ):
+        return jsonify({"error": "Unauthorized"}), 401
+
     data = request.get_json(silent=True) or {}
 
     name = data.get("name")
@@ -39,6 +50,7 @@ def daily_letter_api():
     birth_time = data.get("birth_time")
     birth_place = data.get("birth_place")
     birth_timezone = data.get("timezone")
+
 
     if not all([name, birth_date, birth_time, birth_place, birth_timezone]):
         return jsonify({"error": "Missing birth information"}), 400
