@@ -30,13 +30,15 @@ def display():
 
     return render_template("display.html", letter=letter, date=today)
 
-@app.get("/api/daily-letter")
+@app.post("/api/daily-letter")
 def daily_letter_api():
-    name = request.args.get("name")
-    birth_date = request.args.get("birth_date")
-    birth_time = request.args.get("birth_time")
-    birth_place = request.args.get("birth_place")
-    birth_timezone = request.args.get("timezone")
+    data = request.get_json(silent=True) or {}
+
+    name = data.get("name")
+    birth_date = data.get("birth_date")
+    birth_time = data.get("birth_time")
+    birth_place = data.get("birth_place")
+    birth_timezone = data.get("timezone")
 
     if not all([name, birth_date, birth_time, birth_place, birth_timezone]):
         return jsonify({"error": "Missing birth information"}), 400
