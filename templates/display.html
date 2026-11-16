@@ -1,48 +1,54 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <link 
-        rel="stylesheet"
-        href="https://trmnl.com/css/latest/plugins.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet"
+          href="https://trmnl.com/css/latest/plugins.css">
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
     <script src="https://trmnl.com/js/latest/plugins.js"></script>
+    <title>Celestial Letter</title>
 </head>
-    
+
 <body class="environment trmnl">
     <div class="screen">
-        <div class="view view--full">
+        <div class="view view--full letter-page">
+
             <header class="letter-header">
-                <h1>Celestial Letter</h1>
-                <p> {{ date }}</p>
+                <div class="brand">
+                    <h1>Celestial Letter</h1>
+                </div>
+                <span class="date">{{ date }}</span>
             </header>
 
             <main class="letter-body">
-                <h2>{{ letter.greeting }}</h2>
-                <p>{{ letter.intro }}</p>
+                <div class="letter-content">
 
-                {% for reading in letter.readings %}
-                    <div class="reading">
-                        <h3>{{ reading.title }}</h3>
-                        <p>{{ reading.message }}</p>
+                    <h2>{{ letter.greeting }}</h2>
 
-                        {% if reading.transit is defined %}
-                            <small>
-                                {{ reading.transit }} {{ reading.aspect }}
-                                natal {{ reading.natal }}
-                                (orb: {{ "%.2f"|format(reading.deviation) }}°)
-                            </small>
-                        {% endif %}
-                    </div>
-                {% endfor %}
+                    {% for reading in letter.readings %}
+                        <section class="reading">
+                            <h3>{{ reading.title }}</h3>
+                            <p>{{ reading.message }}</p>
+                        </section>
+                    {% endfor %}
 
-                <p class="closing">{{ letter.closing }}</p>
+                    <p class="closing">{{ letter.closing }} ♡</p>
+                </div>
+
+                <div class="moon-art">
+                    <img src="{{ url_for('static', filename='images/moon.jpg') }}"
+                         alt="Crescent moon">
+                </div>
             </main>
 
             <footer class="letter-footer">
-                <p>Made with ❤️ at Hack Club's TRMNL</p>
+                <span>MADE  WITH ❤️ AT HACK CLUB'S TRMNL</span>
             </footer>
+
         </div>
     </div>
 </body>
