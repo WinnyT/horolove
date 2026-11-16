@@ -1,4 +1,5 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
+
 from main import (
     calculate_planetary_positions,
     get_current_positions,
@@ -28,6 +29,35 @@ def display():
     today = date.today().strftime("%d %b %Y").upper()
 
     return render_template("display.html", letter=letter, date=today)
+
+@app.get("/api/daily-letter")
+def daily_letter_api():
+    name = request.args.get("name")
+    birth_date = request.args.get("birth_date")
+    birth_time = request.args.get("birth_time")
+    birth_place = request.args.get("birth_place")
+    birth_timezone = request.args.get("timezone")
+
+    if not all([name, birth_date, birth_time, birth_place, birth_timezone]):
+        return jsonify({"error": "Missing birth information"}), 400
+
+    birth_info = {
+        "name": name,
+        "birth_date": birth_date,
+        "birth_time": birth_time,
+        "birth_place": birth_place,
+        "time-zone": birth_timezone
+    }
+
+    birth_positions = calculate_planetary_positions(birth_info)
+    current_positions = get_current_positions()
+    transits = analyze_transits(birth_positions, current_positions)
+    letter = generate_daily_letter(name, transits)
+
+    return jsonify({
+        "date": date.today().strftime("%d %b %Y").upper(),
+        "letter": letter
+    })
 
 if __name__ == "__main__":
     app.run(debug=True)
