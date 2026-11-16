@@ -25,7 +25,7 @@ def display():
 
     letter = generate_daily_letter(birth_info["name"], transits)
 
-    today = date.today().strftime("%Y-%m-%d")
+    today = date.today().strftime("%d %b %Y").upper()
 
     return render_template("display.html", letter=letter, date=today)
 

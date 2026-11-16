@@ -14,12 +14,30 @@
     <div class="screen">
         <div class="view view--full">
             <header class="letter-header">
-                <h1> Celestial Letter </h1>
+                <h1>Celestial Letter</h1>
                 <p> {{ date }}</p>
             </header>
 
-            <main class= "letter-body">
-                <p>{{ letter }}</p>
+            <main class="letter-body">
+                <h2>{{ letter.greeting }}</h2>
+                <p>{{ letter.intro }}</p>
+
+                {% for reading in letter.readings %}
+                    <div class="reading">
+                        <h3>{{ reading.title }}</h3>
+                        <p>{{ reading.message }}</p>
+
+                        {% if reading.transit is defined %}
+                            <small>
+                                {{ reading.transit }} {{ reading.aspect }}
+                                natal {{ reading.natal }}
+                                (orb: {{ "%.2f"|format(reading.deviation) }}°)
+                            </small>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+
+                <p class="closing">{{ letter.closing }}</p>
             </main>
 
             <footer class="letter-footer">

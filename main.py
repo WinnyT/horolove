@@ -13,6 +13,7 @@ birth_info = {
 }
 
 
+
 def ask_birth_info():
     print("Please provide the following birth information:")
     birth_info["name"] = input("Name: ")
@@ -115,20 +116,31 @@ def rank_transits(transits):
     return ranked_transits
 
 def generate_daily_letter(name,transits):
-    letter = f"Dear {name},\n\n"
-    letter += "Here's what the stars have to say today:\n\n"
+    letter = {
+        "greeting": f"Dear {name},",
+        "intro": "Here's what the stars have to say today:",
+        "readings": [],
+        "closing": "With love, the stars"
+    }
     ranked_transits = rank_transits(transits)[:2]
     reading_added = 0
     for (natal, transit), (aspect, angle, deviation) in ranked_transits:
         interpretation = get_interpretation(transit, natal, aspect)
         if interpretation:
-            letter += f"\n{transit} {aspect} natal {natal} (orb: {deviation:.2f}°)\n"
-            letter += interpretation["title"] + "\n"
-            letter += interpretation["message"] + "\n"
+            letter["readings"].append({
+                "transit": transit,
+                "natal": natal,
+                "aspect": aspect,
+                "deviation": deviation,
+                "title": interpretation["title"],
+                "message": interpretation["message"]
+            })
             reading_added += 1
     if reading_added == 0:
-        letter += "Today is a quieter day in your celestial chart. Take a moment to reflect on what matters most to you.\n"
-    letter += "\nWith love, the stars"
+        letter["readings"].append({
+        "title": "A Quiet Moment",
+        "message": "Today is a quieter day in your celestial chart. Take a moment to reflect on what matters most to you."
+    })
     return letter
 
 if __name__ == "__main__":
