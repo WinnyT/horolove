@@ -6,6 +6,9 @@ Celestial Letter is a daily astrology project built for Hack Club's TRMNL. It us
 
 Instead of giving you a generic horoscope based only on your Sun sign, I wanted to explore something more personal: how the planets in your birth chart interact with the planets moving through the sky today.
 
+<img width="799" height="479" alt="image" src="https://github.com/user-attachments/assets/0bd895b3-866a-44f6-8bf5-6d66f34c6865" />
+
+
 ## What does it do?
 
 - **Natal Chart:** Calculates planetary positions using your birth date, time, and location.
